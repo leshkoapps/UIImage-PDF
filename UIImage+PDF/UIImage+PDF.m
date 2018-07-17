@@ -314,7 +314,15 @@ static BOOL _shouldCacheOnDisk = YES;
     
     if(_shouldCacheOnDisk && [[ NSFileManager defaultManager ] fileExistsAtPath:cacheFilename ])
     {
-        pdfImage = [ UIImage imageWithCGImage:[[ UIImage imageWithContentsOfFile:cacheFilename ] CGImage ] scale:screenScale orientation:UIImageOrientationUp ];
+        UIImage *imageFromFile = [UIImage imageWithContentsOfFile:cacheFilename];
+        if(imageFromFile){
+            CGImageRef imageFromFileRef = [imageFromFile CGImage];
+            if(imageFromFileRef!=NULL){
+                pdfImage = [UIImage imageWithCGImage:imageFromFileRef
+                                               scale:screenScale
+                                         orientation:UIImageOrientationUp];
+            }
+        }
     }
     else 
     {
